@@ -1,0 +1,5 @@
+FROM registry.redhat.io/rhel8/nginx-116
+
+COPY app /opt/app-root/src
+
+CMD ["/bin/sh", "-c", "/usr/libexec/s2i/run"]

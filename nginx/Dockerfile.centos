@@ -1,0 +1,5 @@
+FROM docker.io/centos/nginx-116-centos7
+
+COPY app /opt/app-root/src
+
+CMD ["/bin/sh", "-c", "/usr/libexec/s2i/run"]
