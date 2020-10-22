@@ -1,0 +1,13 @@
+FROM registry.redhat.io/openjdk/openjdk-11-rhel7 as BUILDER
+
+COPY app /home/jboss/
+
+# WORKDIR /home/jboss/app
+RUN source /opt/rh/rh-maven36/enable && \
+    mvn package -Dquarkus.package.uber-jar=true
+
+FROM registry.redhat.io/openjdk/openjdk-11-rhel7
+
+COPY --from=BUILDER /home/jboss/target/*-runner.jar /deployments/runner.jar
+
+CMD ["/bin/sh", "-c", "/usr/local/s2i/run"]

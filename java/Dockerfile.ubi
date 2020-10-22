@@ -1,0 +1,12 @@
+FROM registry.access.redhat.com/ubi8/openjdk-11 as BUILDER
+
+COPY app /home/jboss/
+
+# WORKDIR /home/jboss/app
+RUN mvn package -Dquarkus.package.uber-jar=true
+
+FROM registry.access.redhat.com/ubi8/openjdk-11
+
+COPY --from=BUILDER /home/jboss/target/*-runner.jar /deployments/runner.jar
+
+CMD ["/bin/sh", "-c", "/usr/local/s2i/run"]
